@@ -1,0 +1,89 @@
+print("Welcome to Battleship!!")
+board = []
+
+# Initialize the board
+for x in range(0, 10):
+    board.append(["-"] * 10)
+
+def printBoard(board):
+    for row in board:
+        print(" ".join(row))
+
+def foundShip(length):
+    # This function returns a list representing a ship of a certain length
+    return ['b'] * length
+
+def checkGameOver():
+    # Check if all ships have been sunk
+    for x in range(len(board)):
+        for i in range(len(board[x])):
+            if board[x][i] == 'b':
+                return False  # There are still ships left
+    return True
+
+def hasShips():
+    # see if there are any ships on the board
+    for row in board:
+        if 'b' in row:
+            return True
+    return False
+
+def addShip():
+    # this adds a ship on the board
+    a = int(input("Starting in which row? "))
+    b = int(input("Starting in which column? "))
+    c = int(input("How long? "))
+    d = input("Horizontal(h) or vertical(v)? ")
+    if d == "h":
+        for x in range(c):
+            if board[a][b + x] == '-':
+                board[a][b + x] = 'b'
+            else:
+                print("Ship cannot be placed here")
+                return
+        print("Ship is added!!")
+    else:
+        for x in range(c):
+            if board[a + x][b] == '-':
+                board[a + x][b] = 'b'
+            else:
+                print("Ship cannot be placed here")
+                return
+        print("Ship is added!!")
+
+def shoot():
+    # This allows user to shoot at a location
+    guess_row = int(input("Input row: "))
+    guess_col = int(input("Input column: "))
+    if board[guess_row][guess_col] == 'b':
+        print("Shoot!! You hit a ship!")
+        board[guess_row][guess_col] = 'x'
+    else:
+        print("You missed it")
+        board[guess_row][guess_col] = 'm'
+
+def userinput():
+    while True:
+        y = input("Type 'a' to add a new ship, 'b' to see the board, 'p' to play, or 'q' to quit: ")
+        if y == 'a':
+            addShip()
+        elif y == 'b':
+            printBoard(board)
+        elif y == 'p':
+            if hasShips():
+                print("Okay, let's play!")
+                while not checkGameOver():
+                    printBoard(board)
+                    shoot()
+                print("Game Over!! All ships have been sunk!")
+                break
+            else:
+                print("No ships on the board! Add some ships before playing.")
+        elif y == 'q':
+            print("You quit! We will now exit the game.")
+            break
+        else:
+            print("Please enter a valid choice.")
+
+# Start the game
+userinput()
